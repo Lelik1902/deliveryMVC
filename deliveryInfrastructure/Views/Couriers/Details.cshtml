@@ -1,0 +1,54 @@
+﻿@model deliveryDomain.Model.Courier
+
+@{
+    ViewData["Title"] = "Деталі кур'єра";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Деталі кур'єра</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="text-primary text-center mb-3">Інформація про кур'єра</h4>
+                    <hr />
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-person me-1"></i> @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-telephone me-1"></i> @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-car me-1"></i> @Html.DisplayNameFor(model => model.VehicleType)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.VehicleType)
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Назад до списку
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+                            <i class="bi bi-pencil"></i> Редагувати
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

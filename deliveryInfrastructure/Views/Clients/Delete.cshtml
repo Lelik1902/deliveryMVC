@@ -1,0 +1,61 @@
+﻿@model deliveryDomain.Model.Client
+
+@{
+    ViewData["Title"] = "Видалити клієнта";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Видалити клієнта</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="text-danger text-center mb-3">Ви впевнені, що хочете видалити цього клієнта?</h4>
+                    <hr />
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-person me-1"></i> @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-telephone me-1"></i> @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-envelope me-1"></i> @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-geo-alt me-1"></i> @Html.DisplayNameFor(model => model.Address)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Address)
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="d-flex justify-content-between">
+                        <input type="hidden" asp-for="Id" />
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Назад до списку
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Видалити
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

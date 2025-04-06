@@ -1,0 +1,43 @@
+﻿@model deliveryDomain.Model.Payment
+
+@{
+    ViewData["Title"] = "Деталі";
+}
+
+<h1>Деталі Оплати</h1>
+
+<div>
+    <h4>Оплата</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.PaymentDate.ToString("dd.MM.yyyy")
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PaymentMethod)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Order.DeliveryAddress)
+        </dd>
+    </dl>
+</div>
+
+<div class="form-group mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+</div>

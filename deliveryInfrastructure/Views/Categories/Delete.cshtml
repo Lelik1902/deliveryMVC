@@ -1,0 +1,49 @@
+﻿@model deliveryDomain.Model.Category
+
+@{
+    ViewData["Title"] = "Видалити категорію";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Видалити категорію</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="text-danger text-center mb-3">Ви впевнені, що хочете видалити цю категорію?</h4>
+                    <hr />
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-tag me-1"></i> @Html.DisplayNameFor(model => model.CategoryName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.CategoryName)
+                        </dd>
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-text-paragraph me-1"></i> @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="d-flex justify-content-between">
+                        <input type="hidden" asp-for="Id" />
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Назад до списку
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Видалити
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

@@ -1,0 +1,79 @@
+﻿@model deliveryDomain.Model.Courier
+
+@{
+    ViewData["Title"] = "Редагувати кур'єра";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Редагування кур'єра</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Edit" id="courierForm">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" id="phoneNumber" required />
+                    <span class="text-danger" id="phoneError" style="display: block;"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="VehicleType" class="form-label"></label>
+                    <select asp-for="VehicleType" class="form-control" required>
+                        <option value="Велосипед">Велосипед</option>
+                        <option value="Авто">Авто</option>
+                        <option value="Пішки">Пішки</option>
+                    </select>
+                    <span asp-validation-for="VehicleType" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Назад
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Зберегти
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        document.getElementById("courierForm").addEventListener("submit", function (event) {
+            let phoneInput = document.getElementById("phoneNumber");
+            let phoneError = document.getElementById("phoneError");
+            let phonePattern = /^\+380\d{9}$/;
+
+            let isValid = true;
+
+            if (!phonePattern.test(phoneInput.value)) {
+                phoneError.textContent = "Введіть номер у форматі +380XXXXXXXXX (9 цифр після +380)";
+                phoneInput.classList.add("is-invalid");
+                phoneError.style.display = "block";
+                isValid = false;
+            } else {
+                phoneError.textContent = "";
+                phoneInput.classList.remove("is-invalid");
+                phoneError.style.display = "none";
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+}

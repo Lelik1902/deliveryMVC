@@ -1,0 +1,46 @@
+﻿@model deliveryDomain.Model.Good
+
+@{
+    ViewData["Title"] = "Додавання товару до категорії @ViewBag.CategoryName";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Додавання товару до категорії @ViewBag.CategoryName</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Назва товару</label>
+                    <input asp-for="Name" value=""  class="form-control" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label">Ціна товару</label>
+                    <input asp-for="Price" class="form-control" required />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" name="categoryId" value="@ViewBag.CategoryId" />
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Повернутися до списку товарів
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Створити товар
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

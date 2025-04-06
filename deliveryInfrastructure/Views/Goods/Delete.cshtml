@@ -1,0 +1,60 @@
+﻿@model deliveryDomain.Model.Good
+
+@{
+    ViewData["Title"] = "Видалити товар";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Видалити товар</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="text-danger text-center mb-3">Ви впевнені, що хочете видалити цей товар?</h4>
+                    <hr />
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-box me-1"></i> @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-currency-dollar me-1"></i> @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+
+                        <dt class="col-sm-4 fw-bold">
+                            <i class="bi bi-tags me-1"></i> @Html.DisplayNameFor(model => model.Category)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.Category.CategoryName)
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex justify-content-between">
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i> Видалити
+                            </button>
+                        </form>
+
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Назад до списку товарів
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

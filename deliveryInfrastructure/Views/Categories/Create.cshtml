@@ -1,0 +1,53 @@
+﻿@model deliveryDomain.Model.Category
+
+@{
+    ViewData["Title"] = "Створити категорію";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Створити нову категорію</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="CategoryName" class="form-label fw-bold">
+                                <i class="bi bi-tag me-1"></i> Назва категорії
+                            </label>
+                            <input asp-for="CategoryName" class="form-control" placeholder="Введіть назву" />
+                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">
+                                <i class="bi bi-text-paragraph me-1"></i> Опис
+                            </label>
+                            <input asp-for="Description" class="form-control" placeholder="Введіть опис" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Назад до списку
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Створити
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

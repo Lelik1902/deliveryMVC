@@ -1,0 +1,124 @@
+﻿@model deliveryDomain.Model.Order
+
+@{
+    ViewData["Title"] = "Створити нове замовлення";
+}
+
+<h1>Створити нове замовлення</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Ліва частина: основні дані -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="ClientId" class="control-label">Клієнт</label>
+                        <select asp-for="ClientId" class="form-control" asp-items="ViewBag.Clients">
+                            <option value="">Виберіть клієнта</option>
+                        </select>
+                        <span asp-validation-for="ClientId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="CourierId" class="control-label">Кур'єр</label>
+                        <select asp-for="CourierId" class="form-control" asp-items="ViewBag.Couriers">
+                            <option value="">Виберіть кур’єра</option>
+                        </select>
+                        <span asp-validation-for="CourierId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="OrderDate" class="control-label">Дата замовлення</label>
+                        <input id="orderDate" asp-for="OrderDate" class="form-control" type="text" />
+                        <span asp-validation-for="OrderDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="DeliveryAddress" class="control-label">Адреса доставки</label>
+                        <input asp-for="DeliveryAddress" class="form-control" />
+                        <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Права частина: товари -->
+                <div class="col-md-6">
+                    <h3>Товари у замовленні</h3>
+                    <div id="goods-container">
+                        <div class="good-item mb-3">
+                            <div class="form-group">
+                                <label class="control-label">Товар</label>
+                                <select name="goodIds[]" class="form-control" asp-items="ViewBag.Goods">
+                                    <option value="">Виберіть товар</option>
+                                </select>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label class="control-label">Кількість</label>
+                                <input name="quantities[]" class="form-control" type="number" min="1" value="1" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="add-good" class="mt-5 btn btn-outline-primary mb-3">Додати ще товар</button>
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="form-group mt-4 d-flex justify-content-start gap-2">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+     
+      document.addEventListener("DOMContentLoaded", function () {
+        flatpickr("#orderDate", {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+            minDate: "1900-01-01 00:00",
+            maxDate: new Date(),
+            locale: "uk"
+        });
+    });
+ 
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("add-good").addEventListener("click", function () {
+            const container = document.getElementById("goods-container");
+            const newItem = document.createElement("div");
+            newItem.className = "good-item mb-3";
+            newItem.innerHTML = `
+                <div class="form-group">
+                    <label class="control-label">Товар</label>
+                    <select name="goodIds[]" class="form-control" asp-items="ViewBag.Goods">
+                        <option value="">Виберіть товар</option>
+                        ${document.querySelector('select[name="goodIds[]"]').innerHTML}
+                    </select>
+                </div>
+                <div class="form-group mt-2">
+                    <label class="control-label">Кількість</label>
+                    <input name="quantities[]" class="form-control" type="number" min="1" value="1" />
+                </div>
+                <button type="button" class="btn btn-outline-danger mt-2 remove-good">Видалити</button>
+            `;
+            container.appendChild(newItem);
+
+            newItem.querySelector(".remove-good").addEventListener("click", function () {
+                if (document.querySelectorAll(".good-item").length > 1) {
+                    container.removeChild(newItem);
+                }
+            });
+        });
+    });
+</script>
+
+@section Scripts {
+    @{
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

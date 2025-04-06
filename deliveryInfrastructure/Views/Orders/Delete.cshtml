@@ -1,0 +1,57 @@
+﻿@model deliveryDomain.Model.Order
+
+@{
+    ViewData["Title"] = "Видалення замовлення";
+}
+
+<div class="container mt-5 mb-5">
+    <h1 class="text-center mb-4">Видалення замовлення</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="text-danger mb-4">Ви впевнені, що хочете видалити це замовлення?</h4>
+
+            <h5 class="mb-3">Деталі замовлення</h5>
+            <dl class="row mb-4">
+                <dt class="col-sm-3 fw-bold">ID:</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3 fw-bold">Клієнт:</dt>
+                <dd class="col-sm-9">@Model.Client?.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Кур’єр:</dt>
+                <dd class="col-sm-9">@Model.Courier?.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Дата замовлення:</dt>
+                <dd class="col-sm-9">@Model.OrderDate.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-3 fw-bold">Сума:</dt>
+                <dd class="col-sm-9">@(Model.TotalAmount.HasValue ? Model.TotalAmount.Value.ToString("C") : "0.00 грн")</dd>
+
+                <dt class="col-sm-3 fw-bold">Адреса доставки:</dt>
+                <dd class="col-sm-9">@Model.DeliveryAddress</dd>
+
+                <dt class="col-sm-3 fw-bold">Статус:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @(Model.Status == "Нове" ? "bg-primary" : Model.Status == "Доставлено" ? "bg-success" : Model.Status == "Скасовано" ? "bg-danger" : "bg-warning")">
+                        @Model.Status
+                    </span>
+                </dd>
+            </dl>
+
+            <form asp-action="Delete" class="d-flex justify-content-start gap-2">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Видалити
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Скасувати
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

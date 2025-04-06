@@ -1,0 +1,109 @@
+﻿@model deliveryDomain.Model.Payment
+
+@{
+    ViewData["Title"] = "Створити оплату";
+}
+
+<h1>Створити оплату</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Ліва частина: дані для оплати -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="OrderId" class="control-label">Виберіть номер замовлення</label>
+                        <select asp-for="OrderId" class="form-control" asp-items="ViewBag.OrderId" id="orderSelect">
+                            <option value="">Виберіть замовлення</option>
+                        </select>
+                        <span asp-validation-for="OrderId" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="PaymentDate" class="control-label">Дата оплати</label>
+                        <input id="paymentDate" asp-for="PaymentDate" class="form-control" type="text" />
+                        <span asp-validation-for="PaymentDate" class="text-danger"></span>
+                    </div>
+
+                    @* <div class="form-group mb-3"> *@
+                    @*     <label asp-for="PaymentMethod" class="control-label">Метод оплати</label> *@
+                    @*     <input asp-for="PaymentMethod" class="form-control" /> *@
+                    @*     <span asp-validation-for="PaymentMethod" class="text-danger"></span> *@
+                    @* </div> *@
+
+                    <!-- Селект для типу оплати -->
+                    <div class="form-group mb-3">
+                        <label for="PaymentType" class="control-label">Тип оплати</label>
+                        <select id="PaymentType" class="form-control" asp-for="PaymentMethod">
+                            <option value="Готівка">Готівка</option>
+                            <option value="Карта">Карта</option>
+                            <option value="Перерахунок">Перерахунок</option>
+                        </select>
+                        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Права частина: сума оплати -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Amount" class="control-label">Сума</label>
+                        <input asp-for="Amount" class="form-control" id="amountField" readonly />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="form-group mt-4 d-flex justify-content-start gap-2">
+                <input type="submit" value="Створити" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Назад до списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const paymentDatePicker = flatpickr("#paymentDate", {
+                enableTime: false,
+                dateFormat: "Y-m-d",
+                minDate: "1900-01-01",
+                maxDate: new Date(),
+                locale: "uk"
+            });
+
+            const currentDate = new Date();
+            const maxDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+            const formattedMaxDate = maxDate.toISOString().split('T')[0];
+            paymentDatePicker.set("maxDate", formattedMaxDate);
+
+            const orderSelect = document.getElementById("orderSelect");
+            const paymentDate = document.getElementById("paymentDate");
+            const amountField = document.getElementById("amountField");
+
+            orderSelect.addEventListener("change", function () {
+                const orderId = this.value;
+                if (orderId) {
+                    fetch(`/Payments/GetOrderDetails?orderId=${orderId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const creationDate = new Date(data.creationDate);
+                            const formattedMinDate = creationDate.toISOString().split('T')[0];
+
+                            paymentDatePicker.set("minDate", formattedMinDate);
+                            amountField.value = data.totalAmount;
+                        });
+                }
+            });
+        });
+    </script>
+}

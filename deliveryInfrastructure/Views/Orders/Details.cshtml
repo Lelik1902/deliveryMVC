@@ -1,0 +1,130 @@
+﻿@model deliveryDomain.Model.Order
+
+@{
+    ViewData["Title"] = "Деталі замовлення";
+}
+
+<div class="container mt-5 mb-5">
+    <h1 class="text-center mb-4">Деталі замовлення #@Model.Id</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row mb-4">
+                <dt class="col-sm-3 fw-bold">Клієнт:</dt>
+                <dd class="col-sm-9">@Model.Client?.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Кур'єр:</dt>
+                <dd class="col-sm-9">@Model.Courier?.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Дата створення:</dt>
+                <dd class="col-sm-9">@Model.OrderDate.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                <dt class="col-sm-3 fw-bold">Сума замовлення:</dt>
+                <dd class="col-sm-9">@(Model.TotalAmount.HasValue ? Model.TotalAmount.Value.ToString("C") : "0.00 грн")</dd>
+
+                <dt class="col-sm-3 fw-bold">Статус:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @(Model.Status == "Нове" ? "bg-primary" : Model.Status == "В процесі" ? "bg-warning" : Model.Status == "Виконане" ? "bg-success" : "bg-danger")">
+                        @Model.Status
+                    </span>
+                </dd>
+            </dl>
+
+            <!-- Товари -->
+            <h4 class="mb-3">Товари у замовленні</h4>
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Назва</th>
+                        <th>Кількість</th>
+                        <th>Ціна за одиницю</th>
+                        <th>Загальна вартість</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OrderGoods.Any())
+                    {
+                        @foreach (var orderGood in Model.OrderGoods)
+                        {
+                            <tr>
+                                <td>@orderGood.Good?.Name</td>
+                                <td>@orderGood.Quantity</td>
+                                <td>@(orderGood.Good?.Price.ToString("C") ?? "0.00 грн")</td>
+                                <td>@((orderGood.Good?.Price * orderGood.Quantity)?.ToString("C") ?? "0.00 грн")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-3">Товари відсутні</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Оплати -->
+            <h4 class="mb-3">Оплати</h4>
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Дата</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Payments.Any())
+                    {
+                        @foreach (var payment in Model.Payments)
+                        {
+                            <tr>
+                                <td>@payment.PaymentDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@payment.Amount.ToString("C")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" class="text-center text-muted py-3">Оплати не знайдено</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Зміна статусу -->
+            <h4 class="mb-3">Змінити статус</h4>
+            <form asp-action="UpdateStatus" method="post" class="mb-4">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <select name="status" class="form-control" onchange="this.form.submit()">
+                        <option value="" disabled>Виберіть статус</option>
+                        @if (Model.Status != "Виконане")
+                        {
+                            <option value="Нове" selected="@(Model.Status == "Нове")">Нове</option>
+                            <option value="В процесі" selected="@(Model.Status == "В процесі")">В процесі</option>
+                            <option value="Скасоване" selected="@(Model.Status == "Скасоване")">Скасоване</option>
+                            <option value="Виконане" selected="@(Model.Status == "Виконане")">Виконане</option>
+                        }
+                        else
+                        {
+                            <option value="Виконане" selected>Виконане</option>
+                        }
+                    </select>
+                </div>
+            </form>
+
+
+            <!-- Кнопки -->
+            <div class="d-flex justify-content-start gap-2">
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Назад до списку
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}
